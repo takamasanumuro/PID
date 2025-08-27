@@ -315,3 +315,43 @@ void setFeedbackWrapBounds(PIDController *controller, int lower, int upper) {
 	controller->feedbackWrapLowerBound = lower;
 	controller->feedbackWrapUpperBound = upper;
 }
+
+/**
+ * Sets the function pointer for retrieving system feedback.
+ * @param controller The PIDController to configure.
+ * @param (*pidSource) The function pointer for retrieving system feedback.
+ */
+void setPIDSource(PIDController *controller, int (*pidSource)()) {
+	if (controller != NULL && pidSource != NULL) {
+		controller->pidSource = pidSource;
+	}
+}
+
+/**
+ * Sets the function pointer for delivering system output.
+ * @param controller The PIDController to configure.
+ * @param (*pidOutput) The function pointer for delivering system output.
+ */
+void setPIDOutput(PIDController *controller, void (*pidOutput)(int output)) {
+	if (controller != NULL && pidOutput != NULL) {
+		controller->pidOutput = pidOutput;
+	}
+}
+
+/**
+ * Registers a function to retrieve system time for more accurate PID calculations.
+ * When registered, the PID controller will use actual time deltas for integral 
+ * and derivative calculations instead of assuming unit time steps.
+ * @param controller The PIDController to configure.
+ * @param (*getSystemTime) Function pointer that returns system time in milliseconds.
+ */
+void registerTimeFunction(PIDController *controller, unsigned long (*getSystemTime)(void)) {
+	if (controller != NULL && getSystemTime != NULL) {
+		controller->getSystemTime = getSystemTime;
+		controller->timeFunctionRegistered = 1;
+		
+		// Initialize time tracking
+		controller->lastTime = getSystemTime();
+		controller->currentTime = controller->lastTime;
+	}
+}

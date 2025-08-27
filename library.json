@@ -1,0 +1,17 @@
+{
+  "name": "PID",
+  "version": "1.0.0",
+  "description": "PID Controller Library with C implementation",
+  "authors": [
+    {
+      "name": "Nick Mosher",
+      "email": "codewhisperer97@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "frameworks": ["arduino"],
+  "platforms": "*",
+  "build": {
+    "srcFilter": ["+<c/>", "-<cpp/>"]
+  }
+}
